@@ -51,111 +51,163 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '数据展示', icon: 'dashboard' }
     }]
   },
-
   {
-    path: '/example',
+    path: '/user',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    meta: { title: '用户管理', icon: 'el-icon-user' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'userStatus',
+        name: 'UserStatus',
+        component: () => import('@/views/user/userStatus'),
+        meta: { title: '用户状态管理', icon: 'form' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'systemMessage',
+        name: 'systemMessage',
+        component: () => import('@/views/user/systemMessage'),
+        meta: { title: '公告推送', icon: 'el-icon-s-promotion' }
       }
     ]
   },
-
   {
-    path: '/form',
+    path: '/article',
     component: Layout,
+    name: 'Article',
+    meta: { title: '文章管理', icon: 'el-icon-notebook-1' },
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        path: 'articleStatus',
+        name: 'ArticleStatus',
+        component: () => import('@/views/article/articleStatus'),
+        meta: { title: '文章状态管理', icon: 'el-icon-document-checked' },
+        children: [
+          {
+            path: 'audit',
+            name: 'ArticleAudit',
+            component: () => import('@/views/article/articleStatus/audit'),
+            meta: { title: '文章审核', icon: 'el-icon-circle-check' }
+          },
+          {
+            path: 'change',
+            name: 'ArticleChange',
+            component: () => import('@/views/article/articleStatus/changeStatus'),
+            meta: { title: '修改状态', icon: 'el-icon-edit' }
+          },
+        ]
+      },
+      {
+        path: 'articleType',
+        name: 'ArticleType',
+        component: () => import('@/views/article/articleType'),
+        meta: { title: '文章分类管理', icon: 'el-icon-collection-tag' }
+      },
+      {
+        path: 'report',
+        name: 'report',
+        component: () => import('@/views/article/articleReport'),
+        meta: { title: '举报管理', icon: 'el-icon-document-remove' },
+        children: [
+          {
+            path: 'articleReport',
+            name: 'ArticleReport',
+            component: () => import('@/views/article/articleReport/article'),
+            meta: { title: '文章举报', icon: 'el-icon-s-release' }
+          },
+          {
+            path: 'commentReport',
+            name: 'ArticleCommentReport',
+            component: () => import('@/views/article/articleReport/comment'),
+            meta: { title: '评论举报', icon: 'el-icon-chat-line-square' }
+          },
+        ]
       }
     ]
   },
-
   {
-    path: '/nested',
+    path: '/trend',
     component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
+    name: 'Trend',
     meta: {
-      title: 'Nested',
-      icon: 'nested'
+      title: '动态管理',
+      icon: 'el-icon-camera'
     },
     children: [
       {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
+        path: 'trendStatus',
+        component: () => import('@/views/trend/trendStatus/index'), // Parent router-view
+        name: 'trendStatus',
+        meta: { title: '动态状态管理', icon: 'el-icon-document-checked' },
         children: [
           {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
+            path: 'audit',
+            component: () => import('@/views/trend/trendStatus/audit'),
+            name: 'TrendAudit',
+            meta: { title: '动态审核', icon: 'el-icon-circle-check' }
           },
           {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
+            path: 'change',
+            component: () => import('@/views/trend/trendStatus/changeStatus'),
+            name: 'TrendChange',
+            meta: { title: '修改状态', icon: 'el-icon-edit' }
           }
         ]
       },
       {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
+        path: 'trendReport',
+        component: () => import('@/views/trend/trendReport'),
+        name: 'TrendReport',
+        meta: { title: '举报管理', icon: 'el-icon-document-remove' },
+        children: [
+          {
+            path: 'aboutTrend',
+            component: () => import('@/views/trend/trendReport/trend'),
+            name: 'AboutTrend',
+            meta: { title: '动态举报', icon: 'el-icon-s-release' }
+          },
+          {
+            path: 'commentReport',
+            component: () => import('@/views/trend/trendReport/comment'),
+            name: 'TrendCommentReport',
+            meta: { title: '评论举报', icon: 'el-icon-chat-line-square' }
+          }
+        ]
       }
     ]
   },
-
+  {
+    path: '/system',
+    component: Layout,
+    name: 'System',
+    meta: {
+      title: '前台信息管理',
+      icon: 'el-icon-info'
+    },
+    children: [
+      {
+        path: 'images',
+        component: () => import('@/views/system/images'), // Parent router-view
+        name: 'Images',
+        meta: { title: '轮播图管理', icon: 'el-icon-picture' },
+      },
+      {
+        path: 'recommend',
+        component: () => import('@/views/system/recommend'),
+        name: 'Recommend',
+        meta: { title: '推荐管理', icon: 'el-icon-medal' }
+      }
+    ]
+  },
   {
     path: 'external-link',
     component: Layout,
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'http://localhost:8080/',
+        meta: { title: '前台链接', icon: 'link' }
       }
     ]
   },
@@ -165,7 +217,7 @@ export const constantRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
