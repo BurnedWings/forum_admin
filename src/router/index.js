@@ -57,7 +57,7 @@ export const constantRoutes = [
   {
     path: '/user',
     component: Layout,
-    meta: { title: '用户管理', icon: 'el-icon-user' },
+    meta: { title: '用户管理', icon: 'el-icon-user',permissions:1 },
     children: [
       {
         path: 'userStatus',
@@ -77,13 +77,13 @@ export const constantRoutes = [
     path: '/article',
     component: Layout,
     name: 'Article',
-    meta: { title: '文章管理', icon: 'el-icon-notebook-1' },
+    meta: { title: '文章管理', icon: 'el-icon-notebook-1',permissions:2 },
     children: [
       {
         path: 'articleStatus',
         name: 'ArticleStatus',
         component: () => import('@/views/article/articleStatus'),
-        meta: { title: '文章状态管理', icon: 'el-icon-document-checked' },
+        meta: { title: '文章状态管理', icon: 'el-icon-document-checked',permissions:2 },
         children: [
           {
             path: 'audit',
@@ -103,13 +103,13 @@ export const constantRoutes = [
         path: 'articleType',
         name: 'ArticleType',
         component: () => import('@/views/article/articleType'),
-        meta: { title: '文章分类管理', icon: 'el-icon-collection-tag' }
+        meta: { title: '文章分类管理', icon: 'el-icon-collection-tag'}
       },
       {
         path: 'report',
         name: 'report',
         component: () => import('@/views/article/articleReport'),
-        meta: { title: '举报管理', icon: 'el-icon-document-remove' },
+        meta: { title: '举报管理', icon: 'el-icon-document-remove',permissions:2 },
         children: [
           {
             path: 'articleReport',
@@ -133,14 +133,15 @@ export const constantRoutes = [
     name: 'Trend',
     meta: {
       title: '动态管理',
-      icon: 'el-icon-camera'
+      icon: 'el-icon-camera',
+      permissions:3
     },
     children: [
       {
         path: 'trendStatus',
         component: () => import('@/views/trend/trendStatus/index'), // Parent router-view
         name: 'trendStatus',
-        meta: { title: '动态状态管理', icon: 'el-icon-document-checked' },
+        meta: { title: '动态状态管理', icon: 'el-icon-document-checked',permissions:3 },
         children: [
           {
             path: 'audit',
@@ -160,7 +161,7 @@ export const constantRoutes = [
         path: 'trendReport',
         component: () => import('@/views/trend/trendReport'),
         name: 'TrendReport',
-        meta: { title: '举报管理', icon: 'el-icon-document-remove' },
+        meta: { title: '举报管理', icon: 'el-icon-document-remove',permissions:3 },
         children: [
           {
             path: 'aboutTrend',
@@ -184,7 +185,8 @@ export const constantRoutes = [
     name: 'System',
     meta: {
       title: '前台信息管理',
-      icon: 'el-icon-info'
+      icon: 'el-icon-info',
+      permissions:4
     },
     children: [
       {
@@ -199,6 +201,20 @@ export const constantRoutes = [
         name: 'Recommend',
         meta: { title: '推荐管理', icon: 'el-icon-medal' }
       }
+    ]
+  },
+  {
+    path: '/permissions',
+    component: Layout,
+    redirect: '/admin',
+    meta:{},
+    children: [
+      {
+        path: 'admin',
+        component: () => import('@/views/admin'), // Parent router-view
+        name: 'admin',
+        meta: { title: '权限管理', icon: 'el-icon-s-check',permissions:0},
+      },
     ]
   },
   {

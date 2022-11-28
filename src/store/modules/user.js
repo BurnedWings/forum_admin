@@ -39,6 +39,9 @@ const mutations = {
   },
   MARKTRENDTASK: (state, trendTask) => {
     state.trendTask = trendTask
+  },
+  SET_PERMISSIONS(state,permissionsList){
+    state.permissionsList = permissionsList
   }
 }
 
@@ -77,10 +80,11 @@ const actions = {
           return reject('Verification failed, please Login again.')
         }
         resolve()
-        const { username, image, _id } = data
+        const { username, image, _id,permissionsList } = data
         commit('SET_NAME', username)
         commit('SET_AVATAR', image)
         commit('SET_ID', _id)
+        commit('SET_PERMISSIONS',permissionsList)
       }
     })
   },

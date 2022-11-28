@@ -89,6 +89,47 @@ router.beforeEach(async (to, from, next) => {
       next('/login');
     }
   }
+  
+  const toPath = to.path
+  if (toPath.indexOf('/user') != -1 ) {
+    if (store.state.user.permissionsList.includes(1)||store.state.user.permissionsList.includes(0)) {
+      return next()
+    }else{
+      return next(`${from.path}`)
+    }
+  }
+
+  if (toPath.indexOf('/article') != -1 ) {
+    if (store.state.user.permissionsList.includes(2)||store.state.user.permissionsList.includes(0)) {
+      return next()
+    }else{
+      return next(`${from.path}`)
+    }
+  }
+
+  if (toPath.indexOf('/trend') != -1 ) {
+    if (store.state.user.permissionsList.includes(3)||store.state.user.permissionsList.includes(0)) {
+      return next()
+    }else{
+      return next(`${from.path}`)
+    }
+  }
+
+  if (toPath.indexOf('/system') != -1 ) {
+    if (store.state.user.permissionsList.includes(4)||store.state.user.permissionsList.includes(0)) {
+      return next()
+    }else{
+      return next(`${from.path}`)
+    }
+  }
+
+  if (toPath.indexOf('/permissions') != -1 ) {
+    if (store.state.user.permissionsList.includes(0)) {
+      return next()
+    }else{
+      return next(`${from.path}`)
+    }
+  }
 
 
 
