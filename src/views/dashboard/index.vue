@@ -89,7 +89,7 @@ export default {
       heart: {
         title: {
           text: "七天内评论统计",
-          padding: [30, 0, 0, 125]
+          padding: [30, 0, 0, 130]
         },
         tooltip: {
           trigger: "axis"
@@ -142,7 +142,7 @@ export default {
       tem: {
         title: {
           text: "七天内新增用户",
-          padding: [10, 0, 0, 180]
+          padding: [10, 0, 0, 130]
         },
         tooltip: {
           trigger: "axis"

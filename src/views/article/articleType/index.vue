@@ -4,17 +4,37 @@
       <div class="tag-container">
         <span class="title">已创建标签</span>
         <div class="tag-box">
-          <el-tag v-for="(name,index) in tagName" :key="index">{{name}}</el-tag>
+          <el-tag
+            @click="toUpdateTheTag(tag)"
+            style="cursor: pointer;"
+            v-for="(tag,index) in tagInfo"
+            :key="index"
+          >
+            {{tag.name}}
+            <i class="el-icon-edit"></i>
+          </el-tag>
         </div>
         <el-button @click="dialogVisible = true" size="mini" type="primary">添加标签</el-button>
       </div>
       <div class="handle-container"></div>
     </div>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+    <el-dialog title="新建文章类型" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
       <el-input maxlength="4" show-word-limit v-model="input" placeholder="请输入内容"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="createTheTag">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="修改文章类型"
+      :visible.sync="updateDialogVisible"
+      width="30%"
+      :before-close="updateHandleClose"
+    >
+      <el-input maxlength="4" show-word-limit v-model="updateInput" placeholder="请输入内容"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="updateDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateTheTag">提 交</el-button>
       </span>
     </el-dialog>
     <div class="cloud-container">
@@ -36,10 +56,41 @@ export default {
       input: "",
       tagName: null,
       tagValue: null,
-      tagInfo: null
+      tagInfo: null,
+      updateDialogVisible: false,
+      updateInput: "",
+      targetTag: null,
+      idArr: null
     };
   },
   methods: {
+    toUpdateTheTag(tag) {
+      this.updateDialogVisible = true;
+      this.updateInput = tag.name;
+      this.targetTag = tag.id;
+    },
+    updateHandleClose() {
+      this.updateInput = "";
+      this.updateDialogVisible = false;
+      this.targetTag = null;
+    },
+    async updateTheTag() {
+      const type = {};
+      type.id = this.targetTag;
+      type.content = this.updateInput;
+      const ret = await this.$API.board.updateTheArticleType(type);
+      if (ret.code === 200) {
+        console.log(ret)
+        this.$message({
+          type: "success",
+          message: "修改成功"
+        });
+        this.updateInput = "";
+        this.updateDialogVisible = false;
+        this.targetTag = null;
+        this.getTypeArticleCount();
+      }
+    },
     //关闭回调
     handleClose() {
       this.input = "";
@@ -64,21 +115,23 @@ export default {
     async getTypeArticleCount() {
       const ret = await this.$API.board.getTypeArticleCount();
       if (ret.code === 200) {
+        this.idArr = ret.idArr;
         this.tagValue = ret.value;
-        let sum = 0
+        let sum = 0;
         this.tagValue.forEach(item => {
-          sum += item
+          sum += item;
         });
         this.tagName = ret.name;
-        let arr = []
+        let arr = [];
         for (const j in this.tagValue) {
-            arr.push({
-              name:this.tagName[j],
-              value:this.tagValue[j],
-              compare:this.tagValue[j]/sum
-            })
-          }
-        this.tagInfo = arr
+          arr.push({
+            name: this.tagName[j],
+            value: this.tagValue[j],
+            compare: this.tagValue[j] / sum,
+            id: this.idArr[j]
+          });
+        }
+        this.tagInfo = arr;
       }
     }
   },

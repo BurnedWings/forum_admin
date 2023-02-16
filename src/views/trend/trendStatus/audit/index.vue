@@ -185,7 +185,7 @@ export default {
         });
       }
     },
-    //通过动态
+    //通过动态审核
     async passTheTrend(val) {
       const ret = await this.$API.trend.auditTheTrend(val);
       if (ret.code === 200) {

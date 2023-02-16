@@ -6,6 +6,8 @@ export const getUserGenderInfo = () => request({url:'/admin/getUserGenderInfo',m
 //大屏文章统计
 export const getTypeArticleCount = () => request({url:'/admin/getTypeArticleCount',method:'get'})
 
+export const updateTheArticleType = (type) => request({url:'/admin/updateTheArticleType',method:'post',data:{type}})
+
 //获取七天内评论数据
 export const getWekCommentCount = () => request({url:'/admin/commentCountForWek',method:'get'})
 

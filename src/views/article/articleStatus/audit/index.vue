@@ -36,7 +36,12 @@
       </el-table-column>
       <el-table-column prop="author" label="作者头像" width="120">
         <template slot-scope="scope">
-          <img @click="showDetailUser(scope.row.author._id)" style="width: 50%;border-radius: 50%;cursor: pointer;" :src="$myBaseUrl+scope.row.author.image" alt />
+          <img
+            @click="showDetailUser(scope.row.author._id)"
+            style="width: 50%;border-radius: 50%;cursor: pointer;"
+            :src="$myBaseUrl+scope.row.author.image"
+            alt
+          />
         </template>
       </el-table-column>
       <el-table-column prop="author" label="作者昵称" width="140">
@@ -54,11 +59,17 @@
             size="mini"
             type="primary"
           >查看详情</el-button>
-          <el-popconfirm @confirm="violateTheUser(scope.row,scope.row.author._id)" title="你确定要将该文章通过审核嘛">
+          <el-popconfirm
+            @confirm="violateTheUser(scope.row,scope.row.author._id)"
+            title="你确定要将该文章通过审核嘛"
+          >
             <el-button style="margin-right:10px;" slot="reference" size="mini" type="success">通过</el-button>
           </el-popconfirm>
-          <el-button @click="toReturnTheArticle(scope.row,scope.row.author._id)" size="mini" type="danger">退回</el-button>
-          
+          <el-button
+            @click="toReturnTheArticle(scope.row,scope.row.author._id)"
+            size="mini"
+            type="danger"
+          >退回</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -137,81 +148,84 @@ export default {
       totalCount: 0,
       currentPage: null,
       targetArticle: null,
-      dialogVisible:false,
-      textarea:'',
-      backArticle:null,
-      backUser:null
+      dialogVisible: false,
+      textarea: "",
+      backArticle: null,
+      backUser: null
     };
   },
   methods: {
-    showDetailUser(userId){
+    showDetailUser(userId) {
       this.$router.push({
-        name:'UserStatus',
-        params:{
+        name: "UserStatus",
+        params: {
           userId
         }
-      })
+      });
     },
     showDetail(val) {
       this.targetArticle = val;
       this.drawer = true;
-      this.$nextTick(()=>{
-        document.querySelector('.el-drawer__body').scrollTo(0,0)
-      })
+      this.$nextTick(() => {
+        document.querySelector(".el-drawer__body").scrollTo(0, 0);
+      });
     },
-    //通过文章
-    async violateTheUser(article,ofUser) {
+    //通过审核
+    async violateTheUser(article, ofUser) {
       const ret = await this.$API.article.auditTheArticle(article._id);
       if (ret.code === 200) {
         if (this.tableData.length === 1 && this.currentPage != 1) {
-          this.currentPage -= 1
-        } 
+          this.currentPage -= 1;
+        }
         this.getNotAuditArticle();
         await this.$API.article.articleStatusMessage({
-          type:1,
-          article:article.title,
+          type: 1,
+          article: article.title,
           ofUser
-        })
+        });
       }
     },
     //退回文章
-    async backTheArticle (){
+    async backTheArticle() {
       if (this.textarea.trim() === "") {
         return this.$message({
           type: "warning",
           message: "你还没有输入描述信息~"
         });
       }
-      const article = this.backArticle
-      const ofUser = this.backUser
-      const ret = await this.$API.article.backTheArticle(article._id)
-      if(ret.code===200){
+      const article = this.backArticle;
+      const ofUser = this.backUser;
+      const ret = await this.$API.article.backTheArticle(article._id);
+      if (ret.code === 200) {
         if (this.tableData.length === 1 && this.currentPage != 1) {
-          this.currentPage -= 1
-        } 
-        this.textarea = ''
-        this.getNotAuditArticle()
-        const message = this.textarea.trim()
+          this.currentPage -= 1;
+        }
+
+        this.getNotAuditArticle();
+        const message = this.textarea.trim();
         await this.$API.article.articleStatusMessage({
-          type:2,
-          article:article.title,
+          type: 2,
+          article: article.title,
           ofUser,
           message
-        })
+        });
+        this.textarea = "";
         this.$message({
-          type:'success',
-          message:'退回成功~'
-        })
+          type: "success",
+          message: "退回成功~"
+        });
       }
-      this.dialogVisible = false
+      this.dialogVisible = false;
     },
     //获取未审核文章
     async getNotAuditArticle() {
       let ret;
       if (this.currentPage) {
         if (this.tableData.length === 1 && this.currentPage != 1) {
-          ret = await this.$API.article.getNotAuditArticle(this.currentPage-1);
-        }else{
+          ret = await this.$API.article.getNotAuditArticle(
+            this.currentPage - 1
+          );
+        } else {
           ret = await this.$API.article.getNotAuditArticle(this.currentPage);
         }
       } else {
@@ -232,15 +246,15 @@ export default {
     },
     handleClose() {
       this.dialogVisible = false;
-      this.backArticle = null
-      this.backUser = null
-      this.textarea = ''
+      this.backArticle = null;
+      this.backUser = null;
+      this.textarea = "";
     },
     //打开退回框
-    toReturnTheArticle(article,ofUser){
-      this.backArticle = article
-      this.backUser = ofUser
-      this.dialogVisible = true
+    toReturnTheArticle(article, ofUser) {
+      this.backArticle = article;
+      this.backUser = ofUser;
+      this.dialogVisible = true;
       this.$nextTick(() => {
         this.$refs.messageBox.focus();
       });

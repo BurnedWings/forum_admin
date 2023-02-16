@@ -119,6 +119,7 @@ export default {
     };
   },
   methods: {
+    //添加管理员
     toCreateAdmin() {
       if (this.tableData.length >= 6) {
         return this.$message({
@@ -143,6 +144,7 @@ export default {
       this.updatePassword = null
       this.updateDialog = false;
     },
+    //更新管理员信息
     async updateTheAdmin() {
       const admin = {};
       admin._id = this.targetAdmin._id;
